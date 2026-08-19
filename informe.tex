@@ -1,0 +1,209 @@
+%=======================================================================
+%  PLANTILLA DE INFORME -- Sistemas Dinámicos
+%
+%  Las cajas en gris e itálica son GUÍAS: explican qué va en cada
+%  sección. Borralas a medida que escribís, o poné \guiasfalse en la
+%  línea correspondiente para ocultarlas todas antes de entregar.
+%=======================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\IfFileExists{spanish.ldf}{\usepackage[spanish,es-noquoting,es-nodecimaldot]{babel}}{}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+
+\renewcommand{\abstractname}{Resumen}
+
+\newif\ifguias
+\guiastrue          % <-- cambiar a \guiasfalse para ocultar las guías
+\newcommand{\guia}[1]{\ifguias\par\noindent
+  {\color{gray!85!black}\small\itshape #1}\par\medskip\fi}
+
+\lstset{basicstyle=\ttfamily\footnotesize,frame=single,framesep=4pt,
+        backgroundcolor=\color{black!4},breaklines=true,
+        columns=fullflexible,showstringspaces=false}
+
+\sisetup{output-decimal-marker={,},per-mode=symbol}
+\DeclareSIUnit{\anio}{a}   % símbolo SI para año
+
+%=======================================================================
+\title{\textbf{Título del trabajo}\\[2pt]
+       \large un subtítulo específico, si hace falta}
+
+\author{Nombre Apellido\\
+        \small  \texttt{correo@dominio}
+        \and
+        Nombre Apellido\\
+        \small  \texttt{correo@dominio}}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+%=======================================================================
+\begin{abstract}
+\guia{El resumen tiene entre 150 y 200 palabras y se escribe AL FINAL.
+Cinco oraciones alcanzan: (1) contexto y problema; (2) objetivo concreto
+de este trabajo; (3) qué se hizo (datos y método, en una línea);
+(4) el resultado principal CON NÚMEROS; (5) qué se concluye.
+No lleva citas, ni figuras, ni siglas sin definir. Escribir sólo
+``en este trabajo se estudia\dots'' no sirve: eso no dice cuál fue el
+resultado.}
+
+Acá va el resumen.
+
+\medskip
+\noindent\textbf{Palabras clave:} tres a cinco términos, separados, por comas.
+\end{abstract}
+
+%=======================================================================
+\section{Introducción}
+\label{sec:intro}
+
+\guia{Cuatro párrafos, en este orden:
+(1) el problema general y por qué importa;
+(2) qué se sabe hasta ahora, con citas \cite{gurtler2018};
+(3) qué falta o qué se quiere responder acá --- el objetivo, enunciado
+de manera verificable;
+(4) cómo está organizado el resto del informe.
+El error típico es escribir toda la teoría en la introducción: la teoría
+va en la Sección~\ref{sec:modelo}.}
+
+%=======================================================================
+\section{Modelo y datos}
+\label{sec:modelo}
+
+\subsection{Modelo}
+\guia{Presentar las ecuaciones, definir CADA símbolo con sus unidades e
+indicar las hipótesis que se están asumiendo (por ejemplo: poblaciones
+bien mezcladas, ausencia de estructura etaria, parámetros constantes en
+el tiempo). Numerar sólo las ecuaciones que después se citan.}
+
+\begin{equation}\label{eq:modelo}
+\dot x = x\,(a_1 - b_{11}x - b_{12}y),\qquad
+\dot y = y\,(a_2 - b_{21}x - b_{22}y),
+\end{equation}
+donde $x$ es \dots\ [individuos] y $a_1$ es \dots\ [\si{\per\anio}].
+
+\subsection{Datos}
+\guia{Origen, período cubierto, frecuencia de muestreo, número de
+observaciones, unidades y --- importante --- qué se sabe del error de
+medición. Si los datos son sintéticos, decirlo acá de forma explícita.}
+
+%=======================================================================
+\section{Métodos}
+\label{sec:metodos}
+
+\guia{Un tercero tiene que poder reproducir los resultados leyendo esta
+sección. Va en pasado o en impersonal, no en imperativo (``se estimaron
+los parámetros'', no ``estimar los parámetros''). Se describe el método,
+no el código: se dice ``mínimos cuadrados no lineales con el algoritmo
+de Levenberg--Marquardt'', no ``se usó \texttt{least\_squares}''.
+Incluir: el método de estimación, el integrador numérico y sus
+tolerancias, el criterio de validación y cómo se cuantificó la
+incertidumbre.}
+
+%=======================================================================
+\section{Resultados}
+\label{sec:resultados}
+
+\guia{Sólo hechos: qué dio. La interpretación va en la Discusión.
+Cada resultado numérico con su incertidumbre y sus unidades. Cada figura
+y cada tabla tiene que estar mencionada en el texto (``la
+Figura~\ref{fig:ajuste} muestra\dots''); si una figura no se menciona,
+sobra.}
+
+\subsection{Estimación de parámetros}
+
+\begin{table}[htbp]
+\centering
+\caption{Parámetros estimados del modelo~\eqref{eq:modelo}. El intervalo
+corresponde a los percentiles 2,5 y 97,5 de 200 réplicas de bootstrap.}
+\label{tab:parametros}
+\begin{tabular}{lccc}
+\toprule
+Parámetro & Unidad & Estimación & IC 95\,\% \\
+\midrule
+$a_1$    & \si{\per\anio} & & \\
+$b_{11}$ & \si{\per\anio} por individuo & & \\
+$\vdots$ & & & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+% \includegraphics[width=\linewidth]{fig_ajuste.pdf}
+\fbox{\parbox[c][3.5cm][c]{0.7\linewidth}{\centering\color{gray}(figura)}}
+\caption{Epígrafe autocontenido: se tiene que entender sin leer el
+cuerpo del texto. Dice qué se grafica, en qué unidades y qué hay que
+mirar. Ejes rotulados con unidades y leyenda dentro de la figura.}
+\label{fig:ajuste}
+\end{figure}
+
+\subsection{Análisis cualitativo}
+
+\subsection{Efecto del control}
+
+%=======================================================================
+\section{Discusión}
+\label{sec:discusion}
+
+\guia{Acá sí se interpreta. Tres cosas:
+(1) qué significan los resultados en términos del problema original
+(¿qué quiere decir, ecológicamente, que $\alpha_{12}>1$?);
+(2) las limitaciones --- todo modelo tiene supuestos que no se cumplen,
+y reconocerlos suma en lugar de restar;
+(3) la comparación con la literatura: ¿el resultado es consistente con
+lo observado en el caso real?}
+
+%=======================================================================
+\section{Conclusiones}
+\label{sec:conclusiones}
+
+\guia{Entre tres y cinco afirmaciones cerradas, cada una respaldada por
+un resultado propio del trabajo, y una línea sobre qué quedaría por
+hacer. No se introduce información nueva ni se repite el resumen palabra
+por palabra.}
+
+%=======================================================================
+\guia{Bibliografía: formato consistente en todas las entradas ---
+autores, título, revista, volumen, páginas, año. Se citan las fuentes
+efectivamente consultadas.}
+
+\begin{thebibliography}{9}
+\small
+
+\bibitem{gurtler2018} R.\,E. Gürtler et al.
+  \emph{Differential long-term impacts of a management control program of
+  axis deer and wild boar in a protected area of north-eastern
+  Argentina}. Biological Invasions 20(6):1431--1447, 2018.
+
+\bibitem{murray} J.\,D. Murray. \emph{Mathematical Biology I: An
+  Introduction}, 3.\textsuperscript{a} ed., Springer, 2002.
+
+\end{thebibliography}
+
+%=======================================================================
+\appendix
+\section{Código}
+\label{ap:codigo}
+
+\guia{El código mínimo que reproduce las figuras, o el enlace al
+repositorio y el commit exacto. Indicar versión de Python y de las
+bibliotecas usadas, y la semilla del generador aleatorio.}
+
+\begin{lstlisting}[language=Python]
+# python 3.12, numpy 2.4, scipy 1.17
+import numpy as np
+\end{lstlisting}
+
+\end{document}
