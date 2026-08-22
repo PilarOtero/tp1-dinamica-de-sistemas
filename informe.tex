@@ -68,48 +68,148 @@ Acá va el resumen.
 \section{Introducción}
 \label{sec:intro}
 
-\guia{Cuatro párrafos, en este orden:
-(1) el problema general y por qué importa;
-(2) qué se sabe hasta ahora, con citas \cite{gurtler2018};
-(3) qué falta o qué se quiere responder acá --- el objetivo, enunciado
-de manera verificable;
-(4) cómo está organizado el resto del informe.
-El error típico es escribir toda la teoría en la introducción: la teoría
-va en la Sección~\ref{sec:modelo}.}
+% \guia{Cuatro párrafos, en este orden:
+% (1) el problema general y por qué importa;
+% (2) qué se sabe hasta ahora, con citas \cite{gurtler2018};
+% (3) qué falta o qué se quiere responder acá --- el objetivo, enunciado
+% de manera verificable;
+% (4) cómo está organizado el resto del informe.
+% El error típico es escribir toda la teoría en la introducción: la teoría
+% va en la Sección~\ref{sec:modelo}.}
+
+\section{Introducción}
+\label{sec:intro}
+
+\section{Introducción}
+\label{sec:intro}
+
+En un ecosistema, controlar una especie invasora no siempre produce un efecto aislado ni predecible. Cuando dos poblaciones compiten por alimento, espacio u otros recursos, reducir la abundancia de una de ellas puede liberar a la otra de parte de esa competencia. Así, una medida de manejo pensada para disminuir el impacto de una especie puede modificar indirectamente la dinámica de otra. Este tipo de respuesta es especialmente relevante en áreas protegidas, donde las decisiones de control buscan conservar especies nativas y procesos ecológicos, pero deben tomarse sobre sistemas con múltiples interacciones.
+
+Un ejemplo de este problema aparece en el Parque Nacional El Palmar, donde conviven ungulados exóticos como el ciervo axis (\emph{Axis axis}) y el jabalí o chancho salvaje (\emph{Sus scrofa}). Ambas especies utilizan recursos similares, incluyendo pastos, frutos de palmera y renovales. Estudios realizados en el área mostraron que, luego de implementar controles sobre jabalíes, su abundancia disminuyó, mientras que la población de ciervos axis aumentó marcadamente en los años siguientes \cite{gurtler2018}. Este comportamiento sugiere una interacción competitiva asimétrica: al reducirse una especie, la otra puede experimentar una ventaja indirecta.
+
+En este trabajo se estudia una versión simplificada de ese fenómeno mediante un modelo de Lotka--Volterra de competencia entre dos especies. A partir de datos sintéticos de censos anuales de ciervos y chanchos, el objetivo es estimar los parámetros del modelo, estudiar los equilibrios del sistema y simular la evolución de las poblaciones bajo distintas políticas de control aplicadas sobre los chanchos. El objetivo principal es entender cómo la interacción competitiva entre ambas especies afecta el resultado de una intervención de manejo y, en particular, cuantificar qué ocurre con la población de ciervos cuando se reduce la población de chanchos.
+
+El informe se organiza de la siguiente manera. En la Sección~\ref{sec:modelo} se presentan el modelo utilizado, sus variables y los datos disponibles. En la Sección~\ref{sec:metodos} se describe el procedimiento usado para estimar los parámetros y realizar las simulaciones. En la Sección~\ref{sec:resultados} se muestran los resultados del ajuste, el análisis cualitativo del sistema y los escenarios de control. Finalmente, en las Secciones~\ref{sec:discusion} y~\ref{sec:conclusiones} se interpretan los resultados obtenidos y se resumen las principales conclusiones.
 
 %=======================================================================
 \section{Modelo y datos}
 \label{sec:modelo}
 
 \subsection{Modelo}
-\guia{Presentar las ecuaciones, definir CADA símbolo con sus unidades e
-indicar las hipótesis que se están asumiendo (por ejemplo: poblaciones
-bien mezcladas, ausencia de estructura etaria, parámetros constantes en
-el tiempo). Numerar sólo las ecuaciones que después se citan.}
+% \guia{Presentar las ecuaciones, definir CADA símbolo con sus unidades e
+% indicar las hipótesis que se están asumiendo (por ejemplo: poblaciones
+% bien mezcladas, ausencia de estructura etaria, parámetros constantes en
+% el tiempo). Numerar sólo las ecuaciones que después se citan.}
 
-\begin{equation}\label{eq:modelo}
-\dot x = x\,(a_1 - b_{11}x - b_{12}y),\qquad
+Para representar la interacción entre las dos especies se utilizó un modelo de Lotka--Volterra de competencia. Se denota por $x(t)$ la abundancia de ciervos axis y por $y(t)$ la abundancia de chanchos, ambas medidas en individuos. La variable $t$ representa el tiempo medido en años. El modelo sin control está dado por
+
+\begin{equation}
+\label{eq:modelo}
+\dot x = x\,(a_1 - b_{11}x - b_{12}y), \qquad
 \dot y = y\,(a_2 - b_{21}x - b_{22}y),
 \end{equation}
-donde $x$ es \dots\ [individuos] y $a_1$ es \dots\ [\si{\per\anio}].
+
+donde $a_1$ y $a_2$ son las tasas de crecimiento propias de ciervos y chanchos, respectivamente, y tienen unidades de $1/\text{año}$. Los parámetros $b_{11}$ y $b_{22}$ describen la competencia dentro de cada especie: a medida que hay más individuos de una misma población, su crecimiento se frena por la competencia por recursos. En cambio, $b_{12}$ y $b_{21}$ describen la competencia entre especies: $b_{12}$ mide el efecto de los chanchos sobre los ciervos, y $b_{21}$ el efecto de los ciervos sobre los chanchos. Todos los coeficientes $b_{ij}$ tienen unidades de $1/(\text{año}\cdot\text{individuo})$.
+
+Para interpretar los resultados también se usa la parametrización ecológica equivalente,
+
+\begin{equation}
+\label{eq:modelo-ecologico}
+\dot x = r_1 x \left(1 - \frac{x + \alpha_{12}y}{K_1}\right), \qquad
+\dot y = r_2 y \left(1 - \frac{y + \alpha_{21}x}{K_2}\right).
+\end{equation}
+
+En esta forma, $r_1$ y $r_2$ representan las tasas de crecimiento de cada especie, con unidades de $1/\text{año}$. Los parámetros $K_1$ y $K_2$ son las capacidades de carga, es decir, las poblaciones máximas que podrían sostenerse si la otra especie no estuviera presente; se miden en individuos. Los coeficientes $\alpha_{12}$ y $\alpha_{21}$ no tienen unidades y permiten comparar la fuerza de la competencia entre especies. Por ejemplo, $\alpha_{12}$ indica cuánto pesa un chancho, en términos de competencia, sobre la población de ciervos. De manera análoga, $\alpha_{21}$ indica cuánto pesa un ciervo sobre la población de chanchos.
+
+Las relaciones entre ambas parametrizaciones son
+\begin{equation}
+\label{eq:relaciones-parametros}
+r_1 = a_1, \qquad r_2 = a_2, \qquad
+K_1 = \frac{a_1}{b_{11}}, \qquad K_2 = \frac{a_2}{b_{22}}, \qquad
+\alpha_{12} = \frac{b_{12}}{b_{11}}, \qquad
+\alpha_{21} = \frac{b_{21}}{b_{22}}.
+\end{equation}
+
+Más adelante se analiza también el efecto de aplicar una extracción sobre la población de chanchos. Para eso se incorpora una variable de control $u(t)$, medida en individuos por año, que representa la cantidad de chanchos removidos por unidad de tiempo. El modelo controlado queda
+
+\begin{equation}
+\label{eq:modelo-control}
+\dot x = x\,(a_1 - b_{11}x - b_{12}y), \qquad
+\dot y = y\,(a_2 - b_{21}x - b_{22}y) - u(t).
+\end{equation}
+
+El modelo toma a cada población como un conjunto homogéneo dentro del área de estudio. Es decir, no distingue zonas del parque, edades ni diferencias entre individuos de una misma especie. Además, se asume que los parámetros no cambian con el tiempo. Estas simplificaciones permiten enfocarse en lo central del trabajo: la competencia entre ciervos y chanchos, y qué ocurre cuando se controla solamente a los chanchos.
 
 \subsection{Datos}
-\guia{Origen, período cubierto, frecuencia de muestreo, número de
-observaciones, unidades y --- importante --- qué se sabe del error de
-medición. Si los datos son sintéticos, decirlo acá de forma explícita.}
+% \guia{Origen, período cubierto, frecuencia de muestreo, número de
+% observaciones, unidades y --- importante --- qué se sabe del error de
+% medición. Si los datos son sintéticos, decirlo acá de forma explícita.}
+
+Para ajustar el modelo se trabajó con una serie anual de abundancias de ciervos axis y chanchos en el área de estudio. Los datos cubren el período 1992-2024, con un censo por año, lo que da un total de $N=33$ observaciones para cada especie. En todos los casos, las cantidades están expresadas como número de individuos.
+
+La serie utilizada fue provista junto con la consigna y es importante aclarar que no corresponde a censos reales. Se trata de datos sintéticos, generados a partir de un modelo y luego modificados con ruido de observación. De todos modos, los órdenes de magnitud fueron elegidos para ser compatibles con valores reportados en estudios sobre el caso del Parque Nacional El Palmar.
+
+Según la información provista, el error de medición de las abundancias es aproximadamente del 5\%. Además, este error puede pensarse como multiplicativo: no afecta tanto como una cantidad fija de individuos, sino como una proporción del valor observado. Por eso, una forma razonable de interpretarlo es como ruido \textit{lognormal} sobre las abundancias.
 
 %=======================================================================
 \section{Métodos}
 \label{sec:metodos}
 
-\guia{Un tercero tiene que poder reproducir los resultados leyendo esta
-sección. Va en pasado o en impersonal, no en imperativo (``se estimaron
-los parámetros'', no ``estimar los parámetros''). Se describe el método,
-no el código: se dice ``mínimos cuadrados no lineales con el algoritmo
-de Levenberg--Marquardt'', no ``se usó \texttt{least\_squares}''.
-Incluir: el método de estimación, el integrador numérico y sus
-tolerancias, el criterio de validación y cómo se cuantificó la
-incertidumbre.}
+% \guia{Un tercero tiene que poder reproducir los resultados leyendo esta
+% sección. Va en pasado o en impersonal, no en imperativo (``se estimaron
+% los parámetros'', no ``estimar los parámetros''). Se describe el método,
+% no el código: se dice ``mínimos cuadrados no lineales con el algoritmo
+% de Levenberg--Marquardt'', no ``se usó \texttt{least\_squares}''.
+% Incluir: el método de estimación, el integrador numérico y sus
+% tolerancias, el criterio de validación y cómo se cuantificó la
+% incertidumbre.}
+
+La estimación de parámetros se hizo aprovechando que el modelo puede escribirse de forma lineal si se trabaja con tasas de crecimiento per cápita. Para eso, se dividió cada ecuación de \eqref{eq:modelo} por la población correspondiente. Así se obtuvo
+
+\begin{equation}
+\label{eq:log-derivadas}
+\frac{d}{dt}\ln x(t) = a_1 - b_{11}x(t) - b_{12}y(t), \qquad
+\frac{d}{dt}\ln y(t) = a_2 - b_{21}x(t) - b_{22}y(t).
+\end{equation}
+
+Como los datos son anuales, la derivada de los logaritmos se aproximó con diferencias entre observaciones consecutivas. Además, las abundancias que aparecen en el lado derecho se evaluaron en el punto medio del intervalo:
+
+\[
+\frac{d}{dt}\ln x(t_{k+1/2})
+\simeq
+\frac{\ln x_{k+1}-\ln x_k}{t_{k+1}-t_k},
+\qquad
+x_{k+1/2}=\frac{x_k+x_{k+1}}{2},
+\qquad
+y_{k+1/2}=\frac{y_k+y_{k+1}}{2}.
+\]
+
+Con estas cantidades se armó un problema de mínimos cuadrados lineales para cada especie. Para los ciervos se estimó el vector $\theta_x=(a_1,b_{11},b_{12})$, usando como regresores $1$, $-x_{k+1/2}$ y $-y_{k+1/2}$. Para los chanchos se usó la misma matriz de regresores, pero estimando $\theta_y=(a_2,b_{21},b_{22})$. En ambos casos, el término observado fue la tasa de crecimiento logarítmica aproximada de la especie correspondiente.
+
+Además del ajuste con datos anuales, se repitió el procedimiento usando una observación cada dos años. Esta comparación permite ver el compromiso entre el error de aproximación de la derivada y la amplificación del ruido de medición al calcular diferencias entre observaciones cercanas.
+
+Para validar el modelo fuera de muestra, se estimaron los parámetros usando únicamente los datos entre 1992 y 2012. Luego se tomó como condición inicial el estado observado en 2012 y se simuló el sistema hasta 2024. Las predicciones para el período 2013--2024 se compararon con los datos reservados mediante el error relativo medio, calculado por separado para ciervos y chanchos:
+
+\[
+\text{error relativo medio}
+=
+\frac{1}{N}\sum_k
+\left|
+\frac{\hat z_k-z_k}{z_k}
+\right|.
+\]
+
+Las simulaciones del sistema dinámico se realizaron con un integrador Runge--Kutta adaptativo, usando el método por defecto de \texttt{solve\_ivp}. Para la validación y para la proyección sin control hasta 2060 se usó un paso máximo de $0{,}1$ años. En los escenarios de control se simuló la evolución durante 40 años desde el estado observado en 2024, usando un paso máximo de $0{,}5$ años. No se fijaron tolerancias manualmente, por lo que se usaron las tolerancias predeterminadas del integrador.
+
+Para estudiar el efecto del manejo se consideraron tres políticas de extracción de chanchos. Primero se simuló una extracción proporcional a la abundancia, $u(t)=ky(t)$, con $k=0$, $0{,}1$, $0{,}2$ y $0{,}4$. Luego se incorporó una saturación en la extracción, $u(t)=\min\{u_{\max},ky(t)\}$, con $u_{\max}=120$ individuos/año. Por último, se analizó una política con umbral,
+
+\[
+u(t)=\min\{u_{\max},k\max(0,y(t)-y_{\mathrm{ref}})\},
+\]
+
+tomando $y_{\mathrm{ref}}=150$ individuos y probando $k=0{,}3$, $0{,}5$, $1{,}0$ y $2{,}0$. En cada caso se registró la evolución de ambas poblaciones y el total de chanchos extraídos, calculado como la integral temporal de $u(t)$.
+
+En este trabajo no se calcularon intervalos de confianza para los parámetros. La confiabilidad del ajuste se evaluó mediante la comparación entre muestreos anuales y bianuales, y mediante la validación fuera de muestra. VERERERERRR
 
 %=======================================================================
 \section{Resultados}
@@ -132,8 +232,8 @@ corresponde a los percentiles 2,5 y 97,5 de 200 réplicas de bootstrap.}
 \toprule
 Parámetro & Unidad & Estimación & IC 95\,\% \\
 \midrule
-$a_1$    & \si{\per\anio} & & \\
-$b_{11}$ & \si{\per\anio} por individuo & & \\
+$a_1$    & $1/\text{año}$ & & \\
+$b_{11}$ & $1/\text{año}$ por individuo & & \\
 $\vdots$ & & & \\
 \bottomrule
 \end{tabular}
