@@ -62,28 +62,29 @@ No lleva citas, ni figuras, ni siglas sin definir. Escribir sólo
 ``en este trabajo se estudia\dots'' no sirve: eso no dice cuál fue el
 resultado.}
 
-Acá va el resumen.
+El control de una especie invasora en un área con competencia interespecífica no
+siempre reduce el impacto ecológico esperado, ya que puede liberar a la especie
+competidora de parte de la presión sobre los recursos compartidos. Este trabajo
+estima los parámetros de un modelo de Lotka--Volterra de competencia entre el ciervo
+axis y el chancho salvaje a partir de censos anuales, y evalúa cómo distintas
+políticas de control realimentado sobre el chancho afectan a ambas poblaciones. Los
+parámetros se ajustaron por mínimos cuadrados lineales sobre la tasa de crecimiento
+per cápita, usando 33 años de datos sintéticos (1992--2024), y el sistema controlado
+se simuló bajo leyes de extracción proporcionales y con umbral. El ajuste, validado
+con un error relativo medio de 3--4\,\% fuera de muestra, arrojó capacidades de carga
+de $K_1\approx1900$ ciervos y $K_2\approx910$ chanchos, con un equilibrio interior
+estable en $(x^*,y^*)\approx(1010,540)$; bajo control del chancho, la población de
+ciervos aumentó entre un 54\,\% y un 92\,\% a 40 años respecto del escenario sin
+control. Estos resultados reproducen, en un modelo simplificado, el mismo efecto de
+liberación competitiva observado en el Parque Nacional El Palmar, y muestran que toda
+política de manejo realimentada sobre el chancho conlleva un costo colateral
+significativo sobre el ciervo.
 
 \medskip
-\noindent\textbf{Palabras clave:} tres a cinco términos, separados, por comas.
+\noindent\textbf{Palabras clave:} competencia interespecífica, modelo de Lotka--Volterra, control realimentado, especies invasoras, estimación de parámetros.
 \end{abstract}
 
 %=======================================================================
-\section{Introducción}
-\label{sec:intro}
-
-% \guia{Cuatro párrafos, en este orden:
-% (1) el problema general y por qué importa;
-% (2) qué se sabe hasta ahora, con citas \cite{gurtler2018};
-% (3) qué falta o qué se quiere responder acá --- el objetivo, enunciado
-% de manera verificable;
-% (4) cómo está organizado el resto del informe.
-% El error típico es escribir toda la teoría en la introducción: la teoría
-% va en la Sección~\ref{sec:modelo}.}
-
-\section{Introducción}
-\label{sec:intro}
-
 \section{Introducción}
 \label{sec:intro}
 
@@ -213,7 +214,7 @@ u(t)=\min\{u_{\max},k\max(0,y(t)-y_{\mathrm{ref}})\},
 
 tomando $y_{\mathrm{ref}}=150$ individuos y probando $k=0{,}3$, $0{,}5$, $1{,}0$ y $2{,}0$. En cada caso se registró la evolución de ambas poblaciones y el total de chanchos extraídos, calculado como la integral temporal de $u(t)$.
 
-En este trabajo no se calcularon intervalos de confianza para los parámetros. La confiabilidad del ajuste se evaluó mediante la comparación entre muestreos anuales y bianuales, y mediante la validación fuera de muestra. VERERERERRR
+Para cuantificar la incertidumbre de los seis parámetros ajustados y de las cantidades derivadas ($K_1$, $K_2$, $\alpha_{12}$, $\alpha_{21}$), se aplicó un bootstrap no paramétrico sobre los pares $(A_k,g_k)$ del sistema de mínimos cuadrados. Se generaron $200$ réplicas, remuestreando con reemplazo los $32$ intervalos disponibles y resolviendo el mismo problema de mínimos cuadrados en cada réplica. El intervalo de confianza del 95\,\% de cada parámetro se calculó como los percentiles 2,5 y 97,5 de su distribución empírica sobre las 200 réplicas. La confiabilidad del ajuste se evaluó, además, mediante la comparación entre muestreos anuales y bianuales, y mediante la validación fuera de muestra.
 
 %=======================================================================
 \section{Resultados}
@@ -236,12 +237,26 @@ corresponde a los percentiles 2,5 y 97,5 de 200 réplicas de bootstrap.}
 \toprule
 Parámetro & Unidad & Estimación & IC 95\,\% \\
 \midrule
-$a_1$    & $1/\text{año}$ & & \\
-$b_{11}$ & $1/\text{año}$ por individuo & & \\
-$\vdots$ & & & \\
+$a_1$        & $1/\text{año}$                        & $0{,}45$   & $[-0{,}07,\ 0{,}56]$   \\
+$b_{11}$     & $1/\text{año}$ por individuo           & $2{,}4\times10^{-4}$ & $[0{,}7,\ 3{,}2]\times10^{-4}$ \\
+$b_{12}$     & $1/\text{año}$ por individuo           & $3{,}9\times10^{-4}$ & $[-2{,}4,\ 6{,}0]\times10^{-4}$ \\
+$a_2$        & $1/\text{año}$                        & $0{,}64$   & $[0{,}30,\ 1{,}00]$    \\
+$b_{21}$     & $1/\text{año}$ por individuo           & $2{,}6\times10^{-4}$ & $[1{,}2,\ 4{,}1]\times10^{-4}$ \\
+$b_{22}$     & $1/\text{año}$ por individuo           & $7{,}0\times10^{-4}$ & $[2{,}9,\ 11{,}6]\times10^{-4}$ \\
+$K_1$        & individuos                            & $1900$     & $[-770,\ 2820]$        \\
+$K_2$        & individuos                            & $910$      & $[800,\ 1120]$         \\
+$\alpha_{12}$ & adimensional                          & $1{,}7$    & $[-2{,}7,\ 3{,}1]$     \\
+$\alpha_{21}$ & adimensional                          & $0{,}36$   & $[0{,}18,\ 0{,}66]$    \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+Los intervalos de $a_1$, $b_{12}$, $K_1$ y $\alpha_{12}$ (todos asociados a la ecuación del
+ciervo) resultan notablemente más anchos que los del resto de los parámetros, y llegan a
+incluir valores negativos sin sentido físico. Esto se debe a la alta sensibilidad de la
+estimación de $a_1$ al año 1992 —el de menor abundancia de ciervos de toda la serie—, que
+actúa como punto de alta influencia (leverage) en la regresión; se retoma en la
+Sección~\ref{sec:discusion}.
 
 \begin{figure}[htbp]
 \centering
