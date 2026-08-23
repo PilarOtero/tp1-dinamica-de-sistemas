@@ -227,48 +227,127 @@ Figura~\ref{fig:ajuste} muestra\dots''); si una figura no se menciona,
 sobra.}
 
 \subsection{Estimación de parámetros}
+Al realizar el ajuste por mínimos cuadrados descrito en la
+Sección~\ref{sec:metodos}, utilizando la serie anual completa
+(1992--2024), se obtuvieron los seis parámetros del modelo~\eqref{eq:modelo}
+que se reportan en la Tabla~\ref{tab:parametros}. A partir de ellos,
+mediante las relaciones~\eqref{eq:relaciones-parametros}, se obtuvieron las
+capacidades de carga $K_1$ y $K_2$ y los coeficientes de competencia
+relativa $\alpha_{12}$ y $\alpha_{21}$. Los intervalos de confianza del
+95\,\% se estimaron por bootstrap sobre las filas del sistema lineal.
 
 \begin{table}[htbp]
 \centering
-\caption{Parámetros estimados del modelo~\eqref{eq:modelo}. El intervalo
-corresponde a los percentiles 2,5 y 97,5 de 200 réplicas de bootstrap.}
+\caption{Parámetros del modelo~\eqref{eq:modelo} estimados por mínimos
+cuadrados lineales sobre la serie anual 1992--2024, con sus unidades. La
+parte inferior reúne las cantidades derivadas
+mediante~\eqref{eq:relaciones-parametros}. El IC 95\,\% corresponde a los
+percentiles 2,5 y 97,5 de 200 réplicas de bootstrap. Los coeficientes
+$b_{ij}$ y su intervalo están expresados en unidades de
+$10^{-4}$.}
 \label{tab:parametros}
 \begin{tabular}{lccc}
 \toprule
 Parámetro & Unidad & Estimación & IC 95\,\% \\
 \midrule
-$a_1$        & $1/\text{año}$                        & $0{,}45$   & $[-0{,}07,\ 0{,}56]$   \\
-$b_{11}$     & $1/\text{año}$ por individuo           & $2{,}4\times10^{-4}$ & $[0{,}7,\ 3{,}2]\times10^{-4}$ \\
-$b_{12}$     & $1/\text{año}$ por individuo           & $3{,}9\times10^{-4}$ & $[-2{,}4,\ 6{,}0]\times10^{-4}$ \\
-$a_2$        & $1/\text{año}$                        & $0{,}64$   & $[0{,}30,\ 1{,}00]$    \\
-$b_{21}$     & $1/\text{año}$ por individuo           & $2{,}6\times10^{-4}$ & $[1{,}2,\ 4{,}1]\times10^{-4}$ \\
-$b_{22}$     & $1/\text{año}$ por individuo           & $7{,}0\times10^{-4}$ & $[2{,}9,\ 11{,}6]\times10^{-4}$ \\
-$K_1$        & individuos                            & $1900$     & $[-770,\ 2820]$        \\
-$K_2$        & individuos                            & $910$      & $[800,\ 1120]$         \\
-$\alpha_{12}$ & adimensional                          & $1{,}7$    & $[-2{,}7,\ 3{,}1]$     \\
-$\alpha_{21}$ & adimensional                          & $0{,}36$   & $[0{,}18,\ 0{,}66]$    \\
+$a_1$ & $1/\text{año}$ & $0{,}450$ & $[-0{,}070,\ 0{,}563]$ \\
+$a_2$ & $1/\text{año}$ & $0{,}638$ & $[\phantom{-}0{,}298,\ 0{,}997]$ \\
+$b_{11}$ & $10^{-4}/(\text{año}\cdot\text{ind})$ & $2{,}35$ & $[\phantom{-}0{,}73,\ 3{,}20]$ \\
+$b_{12}$ & $10^{-4}/(\text{año}\cdot\text{ind})$ & $3{,}93$ & $[-2{,}42,\ 6{,}03]$ \\
+$b_{21}$ & $10^{-4}/(\text{año}\cdot\text{ind})$ & $2{,}55$ & $[\phantom{-}1{,}16,\ 4{,}11]$ \\
+$b_{22}$ & $10^{-4}/(\text{año}\cdot\text{ind})$ & $7{,}02$ & $[\phantom{-}2{,}90,\ 11{,}6]$ \\
+\midrule
+$K_1$        & individuos & $1914$ & $[-769,\ 2821]$ \\
+$K_2$        & individuos & $909$  & $[\phantom{-}796,\ 1119]$ \\
+$\alpha_{12}$ & ---       & $1{,}67$ & $[-2{,}65,\ 3{,}10]$ \\
+$\alpha_{21}$ & ---       & $0{,}36$ & $[\phantom{-}0{,}18,\ 0{,}66]$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Los intervalos de $a_1$, $b_{12}$, $K_1$ y $\alpha_{12}$ (todos asociados a la ecuación del
-ciervo) resultan notablemente más anchos que los del resto de los parámetros, y llegan a
-incluir valores negativos sin sentido físico. Esto se debe a la alta sensibilidad de la
-estimación de $a_1$ al año 1992 —el de menor abundancia de ciervos de toda la serie—, que
-actúa como punto de alta influencia (leverage) en la regresión; se retoma en la
-Sección~\ref{sec:discusion}.
+Los parámetros asociados a los ciervos ($a_1$, $b_{12}$, $K_1$ y
+$\alpha_{12}$) presentan intervalos anchos que incluyen valores
+negativos, mientras que los asociados a los chanchos ($a_2$, $b_{21}$,
+$b_{22}$, $K_2$ y $\alpha_{21}$) resultan más acotados y de signo
+positivo.
+
+Para analizar la calidad del ajuste, la Figura~\ref{fig:residuos} muestra
+los residuos, la tasa de crecimiento per cápita observada menos la
+predicha, para cada especie en función del tiempo.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{residuos.png}
+\caption{Residuos del ajuste lineal, tasa de crecimiento per cápita
+observada menos la predicha por~\eqref{eq:log-derivadas} para ciervos
+(izquierda) y chanchos (derecha), en $1/\text{año}$, en función del año.}
+\label{fig:residuos}
+\end{figure}
+
+Como última verificación se realizó una validación fuera de muestra donde se
+reestimaron los parámetros usando sólo los datos de 1992--2012 y, tomando
+ese último año como punto de partida, se simuló la evolución del sistema
+hasta 2024. Las predicciones para el período reservado 2013--2024 se
+compararon con los datos observados, obteniendo  un error relativo medio de
+$3{,}2\,\%$ para los ciervos y $3{,}9\,\%$ para los chanchos.
+
+\subsection{Análisis cualitativo}
+\label{sec:cualitativo}
+
+El sistema~\eqref{eq:modelo} admite cuatro equilibrios. Anulando $\dot x$ y
+$\dot y$ se obtienen la extinción total $(0,0)$, los estados con una sola
+especie $(K_1,0)$ y $(0,K_2)$, y un equilibrio interior $(x^\ast,y^\ast)$
+en el que ambas poblaciones son no nulas. Este último resuelve el sistema
+lineal $b_{11}x+b_{12}y=a_1$, $b_{21}x+b_{22}y=a_2$, cuya solución por la
+regla de Cramer es
+
+\begin{equation}
+\label{eq:interior}
+x^\ast=\frac{a_1 b_{22}-a_2 b_{12}}{b_{11}b_{22}-b_{12}b_{21}},
+\qquad
+y^\ast=\frac{a_2 b_{11}-a_1 b_{21}}{b_{11}b_{22}-b_{12}b_{21}}.
+\end{equation}
+
+Evaluados con los parámetros de la Tabla~\ref{tab:parametros}, los cuatro
+equilibrios toman los valores de la Tabla~\ref{tab:equilibrios}; el
+equilibrio interior tiene ambas coordenadas positivas.
+
+\begin{table}[htbp]
+\centering
+\caption{Equilibrios del sistema~\eqref{eq:modelo} evaluados con los
+parámetros estimados. Coordenadas en individuos.}
+\label{tab:equilibrios}
+\begin{tabular}{lcc}
+\toprule
+Equilibrio & $x$ [individuos] & $y$ [individuos] \\
+\midrule
+$(0,0)$                    & 0    & 0   \\
+$(K_1,0)$                  & 1914 & 0   \\
+$(0,K_2)$                  & 0    & 909 \\
+Interior $(x^\ast,y^\ast)$ & 1010 & 542 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Para responder si el sistema alcanzó el equilibrio en 2024 se integró el
+modelo~\eqref{eq:modelo} sin control desde el estado observado en ese año,
+$(x,y)=(840,\,653)$ individuos, hasta 2060. En 2024 los ciervos se
+encuentran $170$ individuos por debajo de $x^\ast$ y los chanchos $111$
+individuos por encima de $y^\ast$, lo que equivale a una distancia euclídea
+de $203$ individuos al equilibrio interior $(1010,\,542)$. La
+Figura~\ref{fig:proyeccion} muestra que la trayectoria se aproxima a dicho
+equilibrio, siendo el estado proyectado para 2060 $(989,\,551)$ individuos, a
+$23$ individuos del equilibrio.
 
 \begin{figure}[htbp]
 \centering
-% \includegraphics[width=\linewidth]{fig_ajuste.pdf}
-\fbox{\parbox[c][3.5cm][c]{0.7\linewidth}{\centering\color{gray}(figura)}}
-\caption{Epígrafe autocontenido: se tiene que entender sin leer el
-cuerpo del texto. Dice qué se grafica, en qué unidades y qué hay que
-mirar. Ejes rotulados con unidades y leyenda dentro de la figura.}
-\label{fig:ajuste}
+\includegraphics[width=0.7\linewidth]{24a60.png}
+\caption{Proyección de las poblaciones de ciervos ($x$) y chanchos ($y$),
+en individuos, entre 2024 y 2060, integrando el modelo~\eqref{eq:modelo}
+sin control desde el estado observado en 2024. Las líneas punteadas indican
+las coordenadas $x^\ast$ e $y^\ast$ del equilibrio interior.}
+\label{fig:proyeccion}
 \end{figure}
-
-\subsection{Análisis cualitativo}
 
 \subsection{Efecto del control}
 
