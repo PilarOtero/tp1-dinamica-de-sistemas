@@ -351,6 +351,119 @@ las coordenadas $x^\ast$ e $y^\ast$ del equilibrio interior.}
 
 \subsection{Efecto del control}
 
+Se simuló la evolución del sistema~\eqref{eq:modelo-control} durante 40 años
+desde el estado observado en 2024, bajo una extracción proporcional a la
+abundancia de chanchos, $u(t)=k\,y(t)$, con $k\in\{0,\,0{,}1,\,0{,}2,\,0{,}4\}$.
+La Figura~\ref{fig:control} muestra la evolución de ambas poblaciones y del
+esfuerzo de extracción $u(t)$.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale= 0.5]{simulaciones.png}
+\caption{Extracción proporcional $u=ky$. Población de
+ciervos $x(t)$, población de chanchos $y(t)$ y esfuerzo de extracción
+$u(t)$, en individuos e individuos/año, para los cuatro valores de $k$, a lo
+largo de 40 años desde 2024.}
+\label{fig:control}
+\end{figure}
+
+ La Tabla~\ref{tab:control} reporta el estado
+final de cada población y el total de animales extraídos, calculado como la
+integral de $u(t)$ sobre los 40 años.
+
+\begin{table}[htbp]
+\centering
+\caption{Estado final, a 40 años, y total de animales extraídos bajo
+extracción proporcional $u=ky$. La columna $\Delta x$ es el aumento de la
+población de ciervos respecto del caso sin control ($k=0$).}
+\label{tab:control}
+\begin{tabular}{ccccc}
+\toprule
+$k$ & $x_f$ [ind] & $y_f$ [ind] & $\Delta x$ [\%] & Extraídos [ind] \\
+\midrule
+$0$    & $994$  & ---   & ---   & $0$    \\
+$0{,}1$ & $1528$ & $225$ & $+54$ & $1340$ \\
+$0{,}2$ & $1851$ & $32$  & $+86$ & $1336$ \\
+$0{,}4$ & $1914$ & $0$   & $+92$ & $1001$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Se repitió la simulación incorporando el tope operativo de las partidas de
+caza, $u(t)=\min\{u_{\max},\,k\,y(t)\}$ con $u_{\max}=120$ individuos/año. La
+Tabla~\ref{tab:saturacion} compara el estado final de los chanchos con y sin
+saturación, junto con el total extraído. Los estados finales resultan
+idénticos en ambos casos; el esfuerzo alcanza el tope de 120 individuos/año
+únicamente durante los primeros años y sólo para $k\ge0{,}2$, como muestra
+la Figura~\ref{fig:saturacion}.
+
+\begin{table}[htbp]
+\centering
+\caption{Efecto de la saturación $u=\min\{120,ky\}$ sobre el estado final de
+los chanchos y el total extraído (40 años).}
+\label{tab:saturacion}
+\begin{tabular}{cccc}
+\toprule
+$k$ & $y_f$ sin sat. [ind] & $y_f$ con sat. [ind] & Extraídos [ind] \\
+\midrule
+$0{,}1$ & $225$ & $225$ & $1340$ \\
+$0{,}2$ & $32$  & $32$  & $1336$ \\
+$0{,}4$ & $0$   & $0$   & $1019$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale= 0.5]{saturacion.png}
+\caption{Población de chanchos $y(t)$ (arriba) y esfuerzo $u(t)$ (abajo) con
+y sin saturación, para $k\in\{0{,}1,\,0{,}2,\,0{,}4\}$. La línea punteada
+indica el tope $u_{\max}=120$ individuos/año.}
+\label{fig:saturacion}
+\end{figure}
+
+Por último se simuló una política que sólo extrae cuando la población supera
+un umbral de daño, $u(t)=\min\{u_{\max},\,k\max(0,\,y(t)-y_{\mathrm{ref}})\}$,
+con $y_{\mathrm{ref}}=150$ individuos y $k\in\{0{,}3,\,0{,}5,\,1{,}0,\,2{,}0\}$.
+La Tabla~\ref{tab:umbral} reporta la población final de chanchos, el error de
+regulación en régimen permanente ($y_f-y_{\mathrm{ref}}$) y el estado final
+de los ciervos. El error de regulación disminuye al aumentar $k$, pasando de
+$+65$ a $+8$ individuos, pero se mantiene positivo en todos los casos. La
+Figura~\ref{fig:umbral} muestra la evolución de $y(t)$ frente al umbral.
+
+\begin{table}[htbp]
+\centering
+\caption{Política con umbral ($y_{\mathrm{ref}}=150$): población final de
+chanchos, error de regulación en régimen permanente y aumento de la población
+de ciervos respecto del caso sin control.}
+\label{tab:umbral}
+\begin{tabular}{ccccc}
+\toprule
+$k$ & $y_f$ [ind] & $y_f-y_{\mathrm{ref}}$ [ind] & $x_f$ [ind] & $\Delta x$ [\%] \\
+\midrule
+$0{,}3$ & $215$ & $+65$ & $1555$ & $+56$ \\
+$0{,}5$ & $187$ & $+37$ & $1603$ & $+61$ \\
+$1{,}0$ & $167$ & $+17$ & $1635$ & $+64$ \\
+$2{,}0$ & $158$ & $+8$  & $1650$ & $+66$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale= 0.5]{umbral.png}
+\caption{Población de chanchos $y(t)$ bajo la política con umbral para los
+cuatro valores de $k$. La línea punteada marca $y_{\mathrm{ref}}=150$
+individuos.}
+\label{fig:umbral}
+\end{figure}
+
+En el caso sin control la población de ciervos alcanza $994$ individuos a los
+40 años. En todos los escenarios de extracción de chanchos esa población
+resulta mayor: entre $+54\,\%$ y $+92\,\%$ bajo extracción proporcional
+(Tabla~\ref{tab:control}) y entre $+56\,\%$ y $+66\,\%$ bajo la política con
+umbral (Tabla~\ref{tab:umbral}).
+
 %=======================================================================
 \section{Discusión}
 \label{sec:discusion}
